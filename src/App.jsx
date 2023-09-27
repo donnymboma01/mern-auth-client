@@ -8,10 +8,13 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
+import Header from "./components/Header";
 
 function App() {
   return (
     <BrowserRouter>
+      {/* Header sera ici pour etre accessible partout dans l'application */}
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
