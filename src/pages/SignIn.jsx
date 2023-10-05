@@ -2,12 +2,20 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  signinStart,
+  signinSuccess,
+  signinFailure,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function SignIn() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -18,8 +26,9 @@ function SignIn() {
     event.preventDefault();
 
     try {
-      setLoading(true);
-      setError(false);
+      // setLoading(true);
+      // setError(false);
+      dispatch(signinStart());
       const response = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -29,16 +38,21 @@ function SignIn() {
       });
       const data = await response.json();
       console.log(data);
-      setLoading(false);
+      //setLoading(false);
+      // dispatch(signinSuccess(data));
       if (data.success === false) {
-        setError(true);
+        //setError(true);
+        dispatch(signinFailure(data));
         return;
       }
+      
+      dispatch(signinSuccess(data));
       navigate("/");
     } catch (err) {
       // console.log(error);
-      setLoading(false);
-      setError(true);
+      // setLoading(false);
+      // setError(true);
+      dispatch(signinFailure(err));
     }
   };
 
@@ -75,7 +89,9 @@ function SignIn() {
           <span className="text-blue-500">Sign Up</span>
         </Link>
       </div>
-      <p className="text-red-700 mt-5">{error && "Something went wrong"}</p>
+      <p className="text-red-700 mt-5">
+        {error ? error.message || "Something went wrong" : ""}
+      </p>
     </div>
   );
 }

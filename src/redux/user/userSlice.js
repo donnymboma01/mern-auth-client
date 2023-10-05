@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { CreateSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentUser: null,
@@ -7,8 +7,8 @@ const initialState = {
   error: false,
 };
 
-const userSlice = CreateSlice({
-  name: "user",
+const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
     signinStart: (state) => {
@@ -28,3 +28,4 @@ const userSlice = CreateSlice({
 });
 
 export const { signinStart, signinSuccess, signinFailure } = userSlice.actions;
+export default userSlice.reducer;
